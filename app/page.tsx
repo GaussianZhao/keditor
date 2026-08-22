@@ -54,7 +54,7 @@ function Inline({ text }: { text: string }) {
   })}</>;
 }
 
-function MarkdownPreview({ content }: { content: string }) {
+function MarkdownPreview({ content, fontSize }: { content: string; fontSize: number }) {
   const nodes: ReactNode[] = [];
   let inCode = false;
   let code: string[] = [];
@@ -77,7 +77,7 @@ function MarkdownPreview({ content }: { content: string }) {
     else nodes.push(<p key={index}><Inline text={line} /></p>);
   });
   if (code.length) nodes.push(<pre key="code-final"><code>{code.join('\n')}</code></pre>);
-  return <article className="preview">{nodes}</article>;
+  return <article className="preview" style={{ fontSize }}>{nodes}</article>;
 }
 
 export default function Home() {
@@ -87,6 +87,7 @@ export default function Home() {
   const [content, setContent] = useState(starter);
   const [saveState, setSaveState] = useState<SaveState>('disconnected');
   const [mode, setMode] = useState<ViewMode>('edit');
+  const [fontSize, setFontSize] = useState(18);
   const [message, setMessage] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const lastSaved = useRef(starter);
@@ -218,6 +219,10 @@ export default function Home() {
         <button className="brand" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="打开文档列表">Keditor</button>
         <div className="document-title">{title}</div>
         <div className="top-actions">
+          <div className="font-size-controls" aria-label="Font size">
+            <button onClick={() => setFontSize((size) => Math.max(14, size - 2))} disabled={fontSize <= 14} title="Decrease font size">−</button>
+            <button onClick={() => setFontSize((size) => Math.min(30, size + 2))} disabled={fontSize >= 30} title="Increase font size">+</button>
+          </div>
           <div className="mode-switch" title="Shortcut: Command or Control + Slash" aria-label="Editor view mode">
             <button className={mode === 'edit' ? 'active' : ''} onClick={() => setMode('edit')}>EDIT</button>
             <button className={mode === 'read' ? 'active' : ''} onClick={() => setMode('read')}>READ</button>
@@ -248,7 +253,7 @@ export default function Home() {
         </aside>
 
         <section className="editor-panel">
-          {mode === 'edit' ? <textarea className="editor" aria-label="Markdown 编辑器" spellCheck="false" value={content} onChange={(event) => setContent(event.target.value)} /> : <MarkdownPreview content={content} />}
+          {mode === 'edit' ? <textarea className="editor" style={{ fontSize }} aria-label="Markdown 编辑器" spellCheck="false" value={content} onChange={(event) => setContent(event.target.value)} /> : <MarkdownPreview content={content} fontSize={fontSize} />}
           <footer className="statusbar"><span>{content.replace(/\s/g, '').length} 字 · {content.split(/\s+/).filter(Boolean).length} 词</span><span>{account ? 'OneDrive 云端自动保存' : '当前内容尚未保存'}</span></footer>
         </section>
       </div>
