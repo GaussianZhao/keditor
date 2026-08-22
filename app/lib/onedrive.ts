@@ -28,7 +28,7 @@ async function getClient() {
     auth: {
       clientId: clientId(),
       authority: 'https://login.microsoftonline.com/common',
-      redirectUri: window.location.origin,
+      redirectUri: `${window.location.origin}/auth/callback`,
     },
     cache: {
       cacheLocation: BrowserCacheLocation.SessionStorage,
@@ -36,8 +36,6 @@ async function getClient() {
     },
   });
   await client.initialize();
-  const redirectResult = await client.handleRedirectPromise();
-  if (redirectResult?.account) client.setActiveAccount(redirectResult.account);
   const existing = client.getAllAccounts()[0];
   if (existing && !client.getActiveAccount()) client.setActiveAccount(existing);
   return client;
