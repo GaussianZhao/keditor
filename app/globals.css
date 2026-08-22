@@ -6,7 +6,8 @@ html,body { margin:0; min-height:100%; background:var(--paper); color:var(--ink)
 button,textarea { font:inherit; } button { color:inherit; cursor:pointer; }
 .app-shell { min-height:100vh; background:var(--paper); }
 .topbar { height:62px; display:grid; grid-template-columns:180px minmax(0,1fr) auto; align-items:center; border-bottom:1px solid var(--line); background:var(--paper-bright); padding:0 20px; }
-.brand { display:flex; align-items:center; border:0; background:transparent; font-weight:800; font-size:19px; letter-spacing:-.02em; }
+.brand { display:flex; align-items:center; gap:9px; border:0; background:transparent; font-weight:800; font-size:19px; letter-spacing:-.02em; }
+.brand-icon { width:23px; height:23px; flex:0 0 auto; background:url('/favicon.svg') center/contain no-repeat; }
 .document-title { text-align:center; font-size:14px; font-weight:650; }
 .top-actions { display:flex; justify-content:flex-end; align-items:center; gap:15px; }
 .save-state { color:var(--muted); font-size:12px; }

@@ -216,7 +216,7 @@ export default function Home() {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <button className="brand" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="打开文档列表">Keditor</button>
+        <button className="brand" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="打开文档列表"><span className="brand-icon" aria-hidden="true" />Keditor</button>
         <div className="document-title">{title}</div>
         <div className="top-actions">
           <div className="font-size-controls" aria-label="Font size">

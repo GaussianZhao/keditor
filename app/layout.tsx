@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Keditor — 墨水屏 Markdown 编辑器',
   description: '轻量、安静、由 OneDrive 云端保存的在线 Markdown 编辑器。',
+  icons: { icon: '/favicon.svg' },
 };
 
 export default function RootLayout({
