@@ -102,14 +102,18 @@ export default function Home() {
   useEffect(() => {
     restoreOneDriveSession().then(async (restored) => {
       if (!restored) return;
-      setAccount(restored);
       const docs = await refreshDocuments();
-      setSaveState('clean');
       if (docs[0]) {
         const body = await readDocument(docs[0].id);
         setActive(docs[0]); setContent(body); lastSaved.current = body;
       }
-    }).catch((error: Error) => setMessage(error.message));
+      setAccount(restored);
+      setSaveState('clean');
+    }).catch((error: Error) => {
+      setAccount(null);
+      setSaveState('error');
+      setMessage(error.message);
+    });
   }, []);
 
   useEffect(() => {
@@ -158,7 +162,6 @@ export default function Home() {
     setMessage('');
     try {
       const signedIn = await connectOneDrive();
-      setAccount(signedIn);
       let docs = await refreshDocuments();
       if (!docs.length) {
         const created = await saveDocument('欢迎使用Keditor.md', starter);
@@ -169,8 +172,13 @@ export default function Home() {
         const body = await readDocument(first.id);
         setActive(first); setContent(body); lastSaved.current = body;
       }
+      setAccount(signedIn);
       setSaveState('clean');
-    } catch (error) { setMessage(error instanceof Error ? error.message : '连接失败'); }
+    } catch (error) {
+      setAccount(null);
+      setSaveState('error');
+      setMessage(error instanceof Error ? error.message : '连接失败');
+    }
   }
 
   async function openDocument(doc: CloudDocument) {

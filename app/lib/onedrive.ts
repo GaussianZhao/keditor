@@ -85,6 +85,8 @@ async function graph(path: string, init: RequestInit = {}) {
 }
 
 export async function listDocuments(): Promise<CloudDocument[]> {
+  // The first request creates Apps/{application name} when it does not exist.
+  await graph('/me/drive/special/approot?$select=id');
   const response = await graph('/me/drive/special/approot/children?$select=id,name,eTag,lastModifiedDateTime,size,file');
   const payload = await response.json() as { value: Array<CloudDocument & { file?: unknown }> };
   return payload.value
