@@ -45,12 +45,6 @@ export default defineConfig(async () => {
   const { cloudflare } = await import('@cloudflare/vite-plugin');
 
   return {
-    build: {
-      // Kindle's browser trails desktop browsers by several releases. Keep the
-      // client bundle free of newer syntax such as optional chaining.
-      target: 'es2017',
-      cssTarget: 'chrome61',
-    },
     css: { postcss: { plugins: [tailwindcss()] } },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
